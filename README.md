@@ -19,7 +19,7 @@ python validate.py docs/requirements.md reports/report.pdf
 2. Вставь ключ в файл `.env` в строку `GEMINI_API_KEY=`.
 3. Модель задаётся в `GEMINI_MODEL`. Список моделей, доступных по ключу: `python validate.py --list-models`.
 
-Модель, на которой сделан сданный отчёт: **nvidia/nemotron-3-ultra-550b-a55b** через бесплатный NVIDIA API (`LLM_BASE_URL=https://integrate.api.nvidia.com/v1`, `LLM_STREAM=1`). Итог: 40 требований, 106 нарушений (14 критичных), вердикт «Нет», 23 минуты, 10 запросов к модели. Модель также записана в паспорте отчёта.
+Модель, на которой сделан сданный отчёт: **nvidia/nemotron-3-ultra-550b-a55b** через бесплатный NVIDIA API (`LLM_BASE_URL=https://integrate.api.nvidia.com/v1`, `LLM_STREAM=1`). Итог: 37 требований, 127 нарушений (16 критичных), вердикт «Нет», 26 минут, 10 запросов к модели, коммит агента d6b7f75. Модель также записана в паспорте отчёта.
 
 Подходит и другой провайдер: OpenAI, Anthropic, любой OpenAI-совместимый API или локальная модель через Ollama — примеры в `.env.example`. Агент берёт первый найденный ключ.
 
