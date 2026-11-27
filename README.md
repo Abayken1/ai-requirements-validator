@@ -7,21 +7,33 @@ BCC-HUB x MNU FinTech Hackathon, команда Clarify AI (Абай Кенже�
 ```bash
 python3 -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env                                    # вставь ключ в .env
-python validate.py docs/requirements.md reports/report.pdf
+cp .env.example .env                                    # вставь ключ в .env (см. «Ключ модели»)
+python validate.py docs/requirements.md reports/report.pdf --model nvidia/nemotron-3-ultra-550b-a55b
 ```
 
 Отчёт ляжет в `reports/report.pdf`. Рядом появятся `report.md` (тот же отчёт в Markdown) и `report.json` (все данные прогона).
 
 ## Ключ модели
 
-1. Открой https://aistudio.google.com/apikey, войди через Google, нажми **Create API key**. Хватает бесплатного тарифа.
-2. Вставь ключ в файл `.env` в строку `GEMINI_API_KEY=`.
-3. Модель задаётся в `GEMINI_MODEL`. Список моделей, доступных по ключу: `python validate.py --list-models`.
+### Как повторить сданный прогон (NVIDIA, бесплатно)
 
-Модель, на которой сделан сданный отчёт: **nvidia/nemotron-3-ultra-550b-a55b** через бесплатный NVIDIA API (`LLM_BASE_URL=https://integrate.api.nvidia.com/v1`, `LLM_STREAM=1`). Итог: 37 требований, 127 нарушений (16 критичных), вердикт «Нет», 26 минут, 10 запросов к модели, коммит агента d6b7f75. Модель также записана в паспорте отчёта.
+Сданный отчёт `reports/report.pdf` сделан на модели **nvidia/nemotron-3-ultra-550b-a55b** через бесплатный NVIDIA API.
 
-Подходит и другой провайдер: OpenAI, Anthropic, любой OpenAI-совместимый API или локальная модель через Ollama — примеры в `.env.example`. Агент берёт первый найденный ключ.
+1. Открой https://build.nvidia.com, войди (почта или Google), нажми **Get API Key** — ключ вида `nvapi-...`. Карта не нужна.
+2. `cp .env.example .env`, в `.env` раскомментируй блок NVIDIA (4 строки `LLM_...`) и вставь ключ в `LLM_API_KEY=`.
+3. Запусти:
+
+```bash
+python validate.py docs/requirements.md reports/report.pdf --model nvidia/nemotron-3-ultra-550b-a55b
+```
+
+Прогон идёт около 25 минут (модель рассуждает перед ответом; `LLM_STREAM=1` нужен, чтобы шлюз не обрывал длинные ответы). Итог сданного прогона: 37 требований, 127 нарушений (16 критичных), вердикт «Нет», 10 запросов к модели, коммит агента d6b7f75 — всё это записано в паспорте отчёта. Модель отвечает не полностью детерминированно, поэтому при повторе числа могут немного отличаться.
+
+### Другие провайдеры
+
+- **Google Gemini:** ключ на https://aistudio.google.com/apikey → строка `GEMINI_API_KEY=` в `.env`, модель в `GEMINI_MODEL`. В некоторых аккаунтах/регионах бесплатный тариф Gemini API недоступен (ошибка 403 «free tier is not available») — тогда используй NVIDIA.
+- **OpenAI, Anthropic, любой OpenAI-совместимый API, Ollama** — примеры в `.env.example`. Агент берёт первый найденный ключ.
+- Список моделей, доступных по ключу: `python validate.py --list-models`.
 
 ## Запуск
 
